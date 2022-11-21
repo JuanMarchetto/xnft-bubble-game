@@ -34,15 +34,15 @@ export function App() {
     newBoard[randomItem] = "❌";
     setBoard(newBoard);
   };
-  
+
   const handleReset = () => {
-    setBoard(initialState)
+    setBoard(initialState);
     setGameResult(null);
-  }
+  };
 
   return (
     <View>
-      <View tw="my-5 text-3xl text-purple-100 text-center font-bold">
+      <View tw="my-5 text-3xl text-purple-600 text-center font-bold">
         Tic Tac Toe
       </View>
       <View tw="grid grid-cols-3 grid-rows-3 p-5 my-5">
@@ -57,7 +57,7 @@ export function App() {
       </View>
       <View tw="p-5">
         <Button
-          tw="bg-transparent hover:bg-purple-900 text-blue-100 font-bold hover:text-white py-2 w-full border border-2 border-purple-500 rounded"
+          tw="bg-transparent hover:bg-purple-900 text-blue-600 font-bold hover:text-white py-2 w-full border border-2 border-purple-500 rounded"
           onClick={handleReset}
         >
           Reset!
@@ -65,7 +65,13 @@ export function App() {
       </View>
       {gameResult && (
         <View tw="absolute top-[160px] w-full p-5 h-[200px] bg-black">
-          <View tw={`${gameResult === "Win" ? "text-green-600": "text-red-600"} w-full h-full border border-blue-600 flex items-center justify-center text-4xl`}>You {gameResult}!</View>
+          <View
+            tw={`${
+              gameResult === "Win" ? "text-green-600" : "text-red-600"
+            } w-full h-full border border-blue-600 flex items-center justify-center text-4xl`}
+          >
+            You {gameResult}!
+          </View>
         </View>
       )}
     </View>
