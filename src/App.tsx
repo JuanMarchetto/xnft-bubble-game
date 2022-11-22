@@ -5,6 +5,16 @@ ReactXnft.events.on("connect", () => {
 });
 
 const initialState = ["", "", "", "", "", "", "", "", ""];
+const lines = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
 
 const Item = ({ content, index, handleClick }) => (
   <View
@@ -22,16 +32,37 @@ const Item = ({ content, index, handleClick }) => (
 export function App() {
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
   const [gameResult, setGameResult] = useState<string | null>(null);
+  const checkIfPlayerWins = (player, newBoard) =>
+    lines.some((line) =>
+      line.every((cell) =>
+        newBoard
+          .reduce(
+            (acc, item, index) => (item === player ? [...acc, index] : acc),
+            []
+          )
+          .includes(cell)
+      )
+    );
+
   const handleClick = (index) => {
     const newBoard = [...board];
     newBoard[index] = "ᱛ";
-    const availables = newBoard.reduce(
-      (acc, item, index) => (item ? acc : [...acc, index]),
-      [] as number[]
-    );
-    const randomItem =
-      availables[Math.floor(Math.random() * availables.length)];
-    newBoard[randomItem] = "❌";
+    const playerWin = checkIfPlayerWins("ᱛ", newBoard);
+    const isTie = !playerWin && newBoard.filter((el) => !!el).length === 9;
+    playerWin && setGameResult("Win");
+    isTie && setGameResult("Tie");
+    if (!playerWin && !isTie) {
+      const availables = newBoard.reduce(
+        (acc, item, index) => (item ? acc : [...acc, index]),
+        [] as number[]
+      );
+      const randomItem =
+        availables[Math.floor(Math.random() * availables.length)];
+      newBoard[randomItem] = "❌";
+      const computerWin = checkIfPlayerWins("❌", newBoard);
+      computerWin && setGameResult("Lose");
+    }
+
     setBoard(newBoard);
   };
 
